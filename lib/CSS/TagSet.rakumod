@@ -30,6 +30,7 @@ role CSS::TagSet {
         %asts;
     }
 
+    method xpath-init($) {} # override me
     method internal-stylesheets($) { [] } # override me
     method stylesheet($doc, |c --> CSS::Stylesheet) {
         my @styles = @.internal-stylesheets($doc).map(*.textContent);
@@ -44,9 +45,6 @@ role CSS::TagSet {
     # method to extract instrinsic styling information from tags and attributes
     method tag-style($tag, *%attrs --> CSS::Properties) {
         CSS::Properties;
-    }
-
-    method init(:$xpath-context!) {
     }
 }
 

@@ -7,7 +7,7 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
     use CSS::Module::CSS3;
     use CSS::Properties;
 
-    has CSS::Module $!module;
+    has CSS::Module $.module = CSS::Module::CSS3.module;
     has CSS::Properties %!props;
 
     constant %Tags is export(:PDFTags) = load-css-tagset(%?RESOURCES<tagged-pdf.css>.absolute, :xml);
@@ -18,7 +18,7 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
         %!props{$prop} //= CSS::Properties.new: :$!module, declarations => %Tags{$prop};
     }
 
-    method init(CSS::Module:D :$!module!,) {
+    submethod TWEAK {
         my %CustomProps = %(
             '-pdf-space-before'|'-pdf-space-after'|'-pdf-start-indent'|'-pdf-end-indent' => %(
                 :synopsis<number>,

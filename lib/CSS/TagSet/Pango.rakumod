@@ -7,7 +7,7 @@ class CSS::TagSet::Pango does CSS::TagSet {
     use CSS::Module::CSS3;
     use CSS::Properties;
 
-    has CSS::Module $!module;
+    has CSS::Module $.module = CSS::Module::CSS3.module;
     has CSS::Properties %!props;
     has SetHash %!link-pseudo;
 
@@ -27,7 +27,7 @@ class CSS::TagSet::Pango does CSS::TagSet {
         style => 'font-style',
         weight => 'font-weight',
     );
-    method init(CSS::Module:D :$!module!) {
+    submethod TWEAK {
 
         my %CustomProps = %(
             rise => '-pango-rise' => %(

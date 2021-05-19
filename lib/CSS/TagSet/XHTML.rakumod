@@ -9,7 +9,7 @@ class CSS::TagSet::XHTML does CSS::TagSet {
 
     has CSS::Properties %!props;
     has SetHash %!link-pseudo;
-    has CSS::Module $!module;
+    has CSS::Module $.module = CSS::Module::CSS3.module;
 
     constant %Tags is export(:Tags) = load-css-tagset(%?RESOURCES<xhtml.css>.absolute);
 
@@ -45,14 +45,15 @@ class CSS::TagSet::XHTML does CSS::TagSet {
         'colspan'|'rowspan' => 'td'|'th',
     );
 
-    method init(CSS::Module:D :$!module!, :$xpath-context!) {
+    method xpath-init($xpath-context) {
         $xpath-context.registerFunction(
             'link-pseudo',
             -> $name, $node-set, *@args {
                 my $elem = $node-set.first;
                 ? ($elem.tag ~~ 'a'|'link'|'area' && self.link-pseudo($name, $elem));
             });
-
+    }
+    submethod TWEAK(:$xpath-context) {
         my %CustomProps = %(
             '-xhtml-align' => %(
                 :like<text-align>,
