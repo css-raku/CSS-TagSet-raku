@@ -1,37 +1,55 @@
 [![Build Status](https://travis-ci.org/css-raku/CSS-TagSet-raku.svg?branch=master)](https://travis-ci.org/css-raku/CSS-TagSet-raku)
 
-Name
-----
+[[Raku CSS Project]](https://css-raku.github.io)
+ / [[CSS::TagSet]](https://css-raku.github.io/CSS-TagSet-raku)
 
 CSS::TagSet
+---------
 
-Descripton
-----------
-
-Role to perform tag-specific stylesheet loading, and styling based on tags and attributes.
-
-This is the base role for CSS::TagSet::XHTML.
-
-Methods
+Example
 -------
+```raku
+# interrogate styling rules for various XHTML tags and attributes
+use CSS::TagSet::XHTML;
+my CSS::TagSet::XHTML $tag-set .= new;
 
-### method stylesheet
+# show styling for various XHTML tags
+say $tag-set.tag-style('i');  # font-style:italic;
+say $tag-set.tag-style('b');  # font-weight:bolder;
+say $tag-set.tag-side('th');  # display:table-cell;
 
-    method stylesheet(LibXML::Document $doc) returns CSS::Stylesheet;
+# styling for <image width="200px" height="250px"/>
+say $tag-set.tag-style('img', :width<200px>, :height<250px>);
+# height:250px; width:200px;
+```
+Description
+----------
+This module implements tag specific styling rules for several markup languages, including XHTML, Pango and Tagged-PDF.
 
-A method to build the stylesheet associated with a document; both from internal styling elements and linked stylesheets.
+The `tag-style` method returns a computed L<CSS::Properties> object based on a tag name plus any additional attributes.
 
-This method currently only extracts self-contained internal style-sheets. It neither currently processes `@include` at-rules or externally linked stylesheets.
+The default styling for given tags can be adjusted via the `base-style` method:
 
-### method inline-style
+```raku
+say $tag-set.tag-style('small'); # font-size:0.83em;
+$tag-set.base-style('small').font-size = '0.75em';
+say $tag-set.tag-style('small'); # font-size:0.75em;
+```
 
-    method inline-style(Str $tag, Str :$style) returns CSS::Properties;
+`base-style` can also be used to define styling for simple new tags:
+```raku
+$tag-set.base-style('shout').text-transform = 'upppercase';
+say $tag-set.tag-style('shout');  # text-transform:upppercase;
+```
 
-Default method to parse an inline style associated with the tag, typically the `style` attribute.
+Classes
+---------
+  * [CSS::TagSet](https://css-raku.github.io/CSS-TagSet-raku/CSS/TagSet) - CSS TagSet Role
 
-### method tag-style
+  * [CSS::TagSet::XHTML](https://css-raku.github.io/CSS-TagSet-raku/CSS/TagSet/XHTML) - Implements XHTML specific styling
 
-    method tag-style(str $tag, Str *%atts) returns CSS::Properties
+  * [CSS::TagSet::Pango](https://css-raku.github.io/CSS-TagSet-raku/CSS/TagSet/Pango) - Implements Pango styling
 
-A rule to add any tag-specific property settings. For example. This method must be implmented, by the class that is applying this role.
+  * [CSS::TagSet::TaggedPDF](https://css-raku.github.io/CSS-TagSet-raku/CSS/TagSet/TaggedPDF) - (*UNDER CONSTRUCTION*) Implements Taged PDF styling
+
 

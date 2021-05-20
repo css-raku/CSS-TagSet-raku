@@ -65,9 +65,9 @@ CSS::TagSet
 
 =head2 Descripton
 
-Role to perform tag-specific stylesheet loading, and styling based on tags and attributes.
+A role to perform tag-specific stylesheet loading, and styling based on tags and attributes.
 
-This is the base role for CSS::TagSet::XHTML.
+This is the base role for tag-sets, including L<CSS::TagSet::XHTML>, L<CSS::TagSet::Pango>, and  L<CSS::TagSet::TaggedPDF>.
 
 =head2 Methods
 
@@ -75,7 +75,7 @@ This is the base role for CSS::TagSet::XHTML.
 
     method stylesheet(LibXML::Document $doc) returns CSS::Stylesheet;
 
-A method to build the stylesheet associated with a document; both from internal styling elements and linked stylesheets.
+An abstract method to build the stylesheet associated with a document; both from internal styling elements and linked stylesheets.
 
 This method currently only extracts self-contained internal style-sheets. It neither currently processes `@include` at-rules or externally linked stylesheets.
 
@@ -84,15 +84,21 @@ This method currently only extracts self-contained internal style-sheets. It nei
 
     method inline-style(Str $tag, Str :$style) returns CSS::Properties;
 
-Default method to parse an inline style associated with the tag, typically the `style` attribute.
-
+Default method to parse an inline style associated with the tag, typically the inline style is computed
+from the  `style` attribute.
 
 =head3 method tag-style
 
-    method tag-style(str $tag, Str *%atts) returns CSS::Properties
+    method tag-style(Str $tag, Str *%atts) returns CSS::Properties
 
-A rule to add any tag-specific property settings. For example. This method must be implmented, by the class
-that is applying this role.
+Abstract method to compute a specific style, based on a tag-name and any additional tag attributes. This method must be implmented, by the class instance.
 
+By convention, this method vivifys a new empty L<CSS::Properties> object, if the tag was previously unknown.
+
+=head3 method base-style
+
+    method tag-style(str $tag) returns CSS::Properties
+
+Abstract rule to 
 
 =end pod

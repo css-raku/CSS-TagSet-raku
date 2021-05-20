@@ -22,6 +22,8 @@ say $tag-set.tag-side('th');  # display:table-cell;
 say $tag-set.tag-style('img', :width<200px>, :height<250px>);
 # height:250px; width:200px;
 ```
+Description
+----------
 This module implements tag specific styling rules for several markup languages, including XHTML, Pango and Tagged-PDF.
 
 The `tag-style` method returns a computed L<CSS::Properties> object based on a tag name plus any additional attributes.
@@ -34,10 +36,10 @@ $tag-set.base-style('small').font-size = '0.75em';
 say $tag-set.tag-style('small'); # font-size:0.75em;
 ```
 
-`base-style` can also be used to define new tags:
+`base-style` can also be used to define styling for simple new tags:
 ```raku
-$tag-set.base-style('blah').font-weight = 'bold';
-say $tag-set.tag-style('blah');  # font-weight:bold;
+$tag-set.base-style('shout').text-transform = 'upppercase';
+say $tag-set.tag-style('shout');  # text-transform:upppercase;
 ```
 
 Classes
