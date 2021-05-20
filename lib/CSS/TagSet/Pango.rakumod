@@ -11,11 +11,11 @@ class CSS::TagSet::Pango does CSS::TagSet {
     has CSS::Properties %!props;
     has SetHash %!link-pseudo;
 
-    constant %Tags is export(:PangoTags) = load-css-tagset(%?RESOURCES<pango.css>.absolute);
+    constant %Tags is export(:PangoTags) = load-css-tagset(%?RESOURCES<pango.css>);
     method declarations { %Tags }
 
-    method !base-property(Str $prop) {
-        %!props{$prop} //= CSS::Properties.new(:$!module, declarations => %Tags{$prop});
+    method base-style(Str $prop) {
+        %!props{$prop} //= CSS::Properties.new(:$!module, declarations => %Tags{$prop}) // [];
     }
 
     # mapping of Pango attributes to CSS properties
@@ -96,7 +96,7 @@ class CSS::TagSet::Pango does CSS::TagSet {
 
     # Builds CSS properties from an element from a tag name and attributes
     method tag-style($tag, *%attrs) {
-        my CSS::Properties $css = self!base-property($tag).clone;
+        my CSS::Properties $css = self.base-style($tag).clone;
 
         if $tag eq 'span' {
             for %attrs.keys.grep({%!SpanProp{$_}:exists}) {

@@ -11,12 +11,12 @@ class CSS::TagSet::XHTML does CSS::TagSet {
     has SetHash %!link-pseudo;
     has CSS::Module $.module = CSS::Module::CSS3.module;
 
-    constant %Tags is export(:Tags) = load-css-tagset(%?RESOURCES<xhtml.css>.absolute);
+    constant %Tags is export(:Tags) = load-css-tagset(%?RESOURCES<xhtml.css>);
 
     method declarations { %Tags }
 
-    method !base-property(Str $prop) {
-        %!props{$prop} //= CSS::Properties.new(:$!module, declarations => %Tags{$prop});
+    method base-style(Str $prop) {
+        %!props{$prop} //= CSS::Properties.new(:$!module, declarations => %Tags{$prop} // []);
     }
 
     # mapping of HTML attributes to CSS properties
@@ -92,7 +92,7 @@ class CSS::TagSet::XHTML does CSS::TagSet {
 
     # Builds CSS properties from an element from a tag name and attributes
     method tag-style(Str $tag, :$hidden, *%attrs) {
-        my CSS::Properties $css = self!base-property($tag).clone;
+        my CSS::Properties $css = self.base-style($tag).clone;
         $css.display = :keyw<none> with $hidden;
 
         for %attrs.keys.grep({%AttrTags{$_}:exists && $tag ~~ %AttrTags{$_}}) {

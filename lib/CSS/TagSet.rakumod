@@ -5,28 +5,34 @@ role CSS::TagSet {
     use CSS::Properties;
     use CSS::Stylesheet;
 
-    sub load-css-tagset(Str $tag-css, |c) is export(:load-css-tagset) {
+    sub load-css-tagset($tag-css, |c) is export(:load-css-tagset) {
         my %asts;
-        # Todo: load via CSS::Stylesheet?
-        my CSS::Module $module = CSS::Module::CSS3.module;
-        my $actions = $module.actions.new: |c;
-        my $p = $module.grammar.parsefile($tag-css, :$actions);
-        my %ast = $p.ast;
+        with $tag-css {
+            # Todo: load via CSS::Stylesheet?
+            my CSS::Module $module = CSS::Module::CSS3.module;
+            my $actions = $module.actions.new: |c;
+            my $p = $module.grammar.parsefile(.absolute, :$actions);
+            my %ast = $p.ast;
 
-       for %ast<stylesheet>.list {
-            with .<ruleset> {
-                my $declarations = .<declarations>;
-                for .<selectors>.list {
-                    for .<selector>.list {
-                        for .<simple-selector>.list {
-                            with .<qname><element-name> -> $elem-name {
-                                %asts{$elem-name}.append: $declarations.list;
+            for %ast<stylesheet>.list {
+                with .<ruleset> {
+                    my $declarations = .<declarations>;
+                    for .<selectors>.list {
+                        for .<selector>.list {
+                            for .<simple-selector>.list {
+                                with .<qname><element-name> -> $elem-name {
+                                    %asts{$elem-name}.append: $declarations.list;
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        else {
+            note "running with 'raku --doc', I hope"
+        }
+       
         %asts;
     }
 
@@ -46,6 +52,9 @@ role CSS::TagSet {
     method tag-style($tag, *%attrs --> CSS::Properties) {
         CSS::Properties;
     }
+
+    method base-style(|c) { ... }
+
 }
 
 =begin pod

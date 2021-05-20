@@ -10,12 +10,12 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
     has CSS::Module $.module = CSS::Module::CSS3.module;
     has CSS::Properties %!props;
 
-    constant %Tags is export(:PDFTags) = load-css-tagset(%?RESOURCES<tagged-pdf.css>.absolute, :xml);
+    constant %Tags is export(:PDFTags) = load-css-tagset(%?RESOURCES<tagged-pdf.css>, :xml);
 
     method declarations { %Tags }
 
-    method !base-property(Str $prop) {
-        %!props{$prop} //= CSS::Properties.new: :$!module, declarations => %Tags{$prop};
+    method base-style(Str $prop) {
+        %!props{$prop} //= CSS::Properties.new: :$!module, declarations => %Tags{$prop} // [];
     }
 
     submethod TWEAK {
@@ -78,7 +78,7 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
     my subset HashMap of Pair where .value ~~ Associative;
     # Builds CSS properties from an element from a tag name and attributes
     method tag-style($tag, *%attrs) {
-        my CSS::Properties $css = self!base-property($tag).clone;
+        my CSS::Properties $css = self.base-style($tag).clone;
 
         for %attrs.keys.grep({%Layout{$_}:exists}) -> $key {
             my $value := %attrs{$key};
