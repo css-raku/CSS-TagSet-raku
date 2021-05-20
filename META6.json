@@ -13,7 +13,7 @@
   ],
   "description": "CSS Markup Tag-Sets",
   "license": "Artistic-2.0",
-  "name": "CSS",
+  "name": "CSS::TagSet",
   "perl": "6.c",
   "provides": {
     "CSS::TagSet": "lib/CSS/TagSet.rakumod",
@@ -35,5 +35,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.0.19"
+  "version": "0.0.20"
 }
