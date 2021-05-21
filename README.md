@@ -22,6 +22,7 @@ say $tag-set.tag-side('th');  # display:table-cell;
 say $tag-set.tag-style('img', :width<200px>, :height<250px>);
 # height:250px; width:200px;
 ```
+
 Description
 ----------
 This module implements tag specific styling rules for several markup languages, including XHTML, Pango and Tagged-PDF.
