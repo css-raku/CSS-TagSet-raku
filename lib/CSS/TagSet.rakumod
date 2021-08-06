@@ -1,7 +1,7 @@
 use v6;
 
 # interface role for tagsets
-role CSS::TagSet:ver<0.0.21> {
+role CSS::TagSet:ver<0.0.22> {
     use CSS::Properties;
     use CSS::Stylesheet;
 
