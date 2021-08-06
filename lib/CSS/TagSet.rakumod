@@ -38,14 +38,18 @@ role CSS::TagSet:ver<0.0.21> {
 
     method xpath-init($) {} # override me
     method internal-stylesheets($) { [] } # override me
+    method module { ... }
     method stylesheet($doc, |c --> CSS::Stylesheet) {
-        my @styles = @.internal-stylesheets($doc).map(*.textContent);
+        my @styles = @.internal-stylesheets($doc)».textContent;
         CSS::Stylesheet.new(|c).parse(@styles.join: "\n");
     }
 
+    # attribute that contains inline styleing
+    method inline-style-attribute { 'style' }
+
     # method to extract inline styling
     method inline-style(Str $, Str :$style) {
-        CSS::Properties.new(:$style);
+        CSS::Properties.new(:$.module, :$style);
     }
 
     # method to extract instrinsic styling information from tags and attributes

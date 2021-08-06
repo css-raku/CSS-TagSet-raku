@@ -34,7 +34,7 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
     }
 
     sub snake-case($s) {
-        $s.split(/<?after .><?before <[A..Z]>>/).map(*.lc).join: '-'
+        $s.split(/<?after .><?before <[A..Z]>>/)».lc.join: '-'
     }
 
     # mapping of Tagged PDF attributes to CSS properties
@@ -70,14 +70,9 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
         # Todo: BBox BlockAlign InlineAlign TBorderStyle TPadding TextDecorationColor TextDecorationThickness RubyAlign RubyPosition GlyphOrientationVertical
     );
 
-    # method to extract inline styling
-    method inline-style(Str $, Str :$style) {
-        CSS::Properties.new(:$!module, :$style);
-    }
-
     my subset HashMap of Pair where .value ~~ Associative;
     # Builds CSS properties from an element from a tag name and attributes
-    method tag-style($tag, *%attrs) {
+    method tag-style($tag, *%attrs --> CSS::Properties) {
         my CSS::Properties $css = self.base-style($tag).clone;
 
         for %attrs.keys.grep({%Layout{$_}:exists}) -> $key {

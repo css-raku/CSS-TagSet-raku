@@ -1,6 +1,7 @@
 Revision history for CSS-TagSet
 
 {{$NEXT}}
+    - Move inline-style-attribute() method to CSS::TagSet
 
 0.0.21  2021-05-22T06:08:23+12:00
     - Fix release configuration; restore overwritten README.md

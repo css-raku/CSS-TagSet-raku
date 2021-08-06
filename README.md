@@ -18,14 +18,14 @@ say $tag-set.tag-style('i');  # font-style:italic;
 say $tag-set.tag-style('b');  # font-weight:bolder;
 say $tag-set.tag-side('th');  # display:table-cell;
 
-# styling for <image width="200px" height="250px"/>
+# styling for <img width="200px" height="250px"/>
 say $tag-set.tag-style('img', :width<200px>, :height<250px>);
 # height:250px; width:200px;
 ```
 
 Description
 ----------
-This module implements tag specific styling rules for several markup languages, including XHTML, Pango and Tagged-PDF.
+This module implements default tag specific styling rules for several markup languages, including XHTML, Pango and Tagged-PDF.
 
 The `tag-style` method returns a computed L<CSS::Properties> object based on a tag name plus any additional attributes.
 

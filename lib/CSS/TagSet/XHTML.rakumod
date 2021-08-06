@@ -85,11 +85,6 @@ class CSS::TagSet::XHTML does CSS::TagSet {
         $doc.findnodes('html/head/style');
     }
 
-    # method to extract inline styling
-    method inline-style(Str $, Str :$style) {
-        CSS::Properties.new(:$!module, :$style);
-    }
-
     # Builds CSS properties from an element from a tag name and attributes
     method tag-style(Str $tag, :$hidden, *%attrs) {
         my CSS::Properties $css = self.base-style($tag).clone;
