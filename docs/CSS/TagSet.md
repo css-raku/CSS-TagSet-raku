@@ -7,8 +7,8 @@ Name
 
 CSS::TagSet
 
-Descripton
-----------
+Description
+-----------
 
 A role to perform tag-specific stylesheet loading, and styling based on tags and attributes.
 
@@ -35,9 +35,9 @@ Default method to parse an inline style associated with the tag, typically the i
 
     method tag-style(Str $tag, Str *%atts) returns CSS::Properties
 
-Abstract method to compute a specific style, based on a tag-name and any additional tag attributes. This method must be implmented, by the class instance.
+Abstract method to compute a specific style, based on a tag-name and any additional tag attributes. This method must be implemented, by the class instance.
 
-By convention, this method vivifys a new empty [CSS::Properties](https://css-raku.github.io/CSS-Properties-raku/CSS/Properties) object, if the tag was previously unknown.
+By convention, this method vivifies a new empty [CSS::Properties](https://css-raku.github.io/CSS-Properties-raku/CSS/Properties) object, if the tag was previously unknown.
 
 ### method base-style
 

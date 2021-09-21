@@ -9,7 +9,6 @@ class CSS::TagSet::Pango does CSS::TagSet {
 
     has CSS::Module $.module = CSS::Module::CSS3.module;
     has CSS::Properties %!props;
-    has SetHash %!link-pseudo;
 
     constant %Tags is export(:PangoTags) = load-css-tagset(%?RESOURCES<pango.css>);
     method declarations { %Tags }
@@ -50,7 +49,7 @@ class CSS::TagSet::Pango does CSS::TagSet {
                             :keyw($att.lc);
                         }
                         else {
-                            # size in thousanths of a point
+                            # size in thousandths of a point
                             my $pt = $att.Numeric / 1000;
                             :$pt
                         }

@@ -54,16 +54,16 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
             snake-case($prop) => [ $s.split(' ').map: -> $pt { :$pt } ];
         },
         'TextIdent'|'Width'|'Height'|'LineHeight' => -> Str $prop, Num() $pt {
-            # aproximate
+            # approximate
             snake-case($prop) => :$pt;
         },
         'TextAlign' => -> Str $prop, Str $s {
             snake-case($prop) => $s.lc;
         },
-        'TextDecorationType' => -> Str $prop, Str $s {
+        'TextDecorationType' => -> Str $, Str $s {
             text-decoration => $s.lc;
         },
-        # Custom properties which don't map well to CSS standard propeties
+        # Custom properties which don't map well to CSS standard properties
         'SpaceBefore'|'SpaceAfter'|'StartIndent'|'EndIndent' => -> Str $prop, Num() $pt {
             '-pdf-' ~ snake-case($prop) => :$pt;
         },

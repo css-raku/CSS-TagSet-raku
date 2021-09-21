@@ -37,14 +37,14 @@ role CSS::TagSet:ver<0.0.22> {
     }
 
     method xpath-init($) {} # override me
-    method internal-stylesheets($) { [] } # override me
+    method stylesheet-content($) { [] } # override me
     method module { ... }
     method stylesheet($doc, |c --> CSS::Stylesheet) {
-        my @styles = @.internal-stylesheets($doc)».textContent;
+        my @styles = @.stylesheet-content($doc);
         CSS::Stylesheet.new(|c).parse(@styles.join: "\n");
     }
 
-    # attribute that contains inline styleing
+    # attribute that contains inline styling
     method inline-style-attribute { 'style' }
 
     # method to extract inline styling
@@ -52,9 +52,9 @@ role CSS::TagSet:ver<0.0.22> {
         CSS::Properties.new(:$.module, :$style);
     }
 
-    # method to extract instrinsic styling information from tags and attributes
+    # method to extract intrinsic styling information from tags and attributes
     method tag-style($tag, *%attrs --> CSS::Properties) {
-        CSS::Properties;
+        CSS::Properties.new;
     }
 
     method base-style(|c) { ... }
@@ -67,7 +67,7 @@ role CSS::TagSet:ver<0.0.22> {
 
 CSS::TagSet
 
-=head2 Descripton
+=head2 Description
 
 A role to perform tag-specific stylesheet loading, and styling based on tags and attributes.
 
@@ -95,9 +95,9 @@ from the  `style` attribute.
 
     method tag-style(Str $tag, Str *%atts) returns CSS::Properties
 
-Abstract method to compute a specific style, based on a tag-name and any additional tag attributes. This method must be implmented, by the class instance.
+Abstract method to compute a specific style, based on a tag-name and any additional tag attributes. This method must be implemented, by the class instance.
 
-By convention, this method vivifys a new empty L<CSS::Properties> object, if the tag was previously unknown.
+By convention, this method vivifies a new empty L<CSS::Properties> object, if the tag was previously unknown.
 
 =head3 method base-style
 

@@ -25,9 +25,24 @@ say $tag-set.tag-style('img', :width<200px>, :height<250px>);
 
 Description
 ----------
-This module implements default tag specific styling rules for several markup languages, including XHTML, Pango and Tagged-PDF.
+This module implements document specific styling rules for several markup languages, including XHTML, Pango and Tagged-PDF.
 
-The `tag-style` method returns a computed L<CSS::Properties> object based on a tag name plus any additional attributes.
+TagSet classes perform the role CSS::TagSet and implement the follow methods, to
+define how stylesheets are associated with documents and how CSS styling is
+determined from document content, including the extraction of stylesheets
+and applying styling to nodes in the document. The methods that need to
+be implemented are:
+
+Method | Description
+-------|----------
+`stylesheet-content($doc)` | Extracts and returns stylesheets for a document
+`tag-style(Str $tag, :$hidden, *%attrs)` | Computes styling for a node with a given tag-name and attributes
+`inline-style-attribute()` | Returns inline styling attribute. Defaults to style
+
+In the case of XHTML (CSS::TagSet::XHTML):
+
+- The `stylesheet-content($doc)` method extracts `<style>...</style>` tags or externally linked via `<link rel="stylesheet href=.../>` tags,
+- for example `$.tag-style('b')` returns a CSS::Properties object `font-weight:bolder;`
 
 The default styling for given tags can be adjusted via the `base-style` method:
 

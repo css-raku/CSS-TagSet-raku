@@ -48,7 +48,7 @@ class CSS::TagSet::XHTML does CSS::TagSet {
     method xpath-init($xpath-context) {
         $xpath-context.registerFunction(
             'link-pseudo',
-            -> $name, $node-set, *@args {
+            -> $name, $node-set {
                 my $elem = $node-set.first;
                 ? ($elem.tag ~~ 'a'|'link'|'area' && self.link-pseudo($name, $elem));
             });
@@ -77,12 +77,18 @@ class CSS::TagSet::XHTML does CSS::TagSet {
     multi sub tweak-style($, $,) is default {
     }
 
-    method external-stylesheets($doc) {
-        $doc.findnodes('html/head/link[@rel="stylesheet"]');
-    }
-
-    method internal-stylesheets($doc) {
-        $doc.findnodes('html/head/style');
+    method stylesheet-content($doc) {
+        my @content;
+        for $doc.findnodes('html/head/[link[@rel="stylesheet"]|html/head/style') -> $e  {
+            given $e.tag {
+                when 'style' {
+                    @content.push: $e.textContent;
+                }
+                when 'link' {
+                    warn "ignoring linked stylesheet {$e.str}";
+                }
+            }
+        }
     }
 
     # Builds CSS properties from an element from a tag name and attributes
