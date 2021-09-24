@@ -9,7 +9,8 @@
     "CSS::Module:ver<0.5.8+>",
     "CSS::Properties:ver<0.6.6+>",
     "CSS::Stylesheet:ver<0.0.19+>",
-    "Method::Also"
+    "Method::Also",
+    "URI:ver<0.3.3+>"
   ],
   "description": "CSS Markup Tag-Sets",
   "license": "Artistic-2.0",

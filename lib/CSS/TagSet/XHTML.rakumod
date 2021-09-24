@@ -6,6 +6,7 @@ class CSS::TagSet::XHTML does CSS::TagSet {
     use CSS::Module;
     use CSS::Module::CSS3;
     use CSS::Properties;
+    use URI;
 
     has CSS::Properties %!props;
     has SetHash %!link-pseudo;
@@ -77,18 +78,35 @@ class CSS::TagSet::XHTML does CSS::TagSet {
     multi sub tweak-style($, $,) is default {
     }
 
-    method stylesheet-content($doc) {
+    sub matching-media($media, $query) {
+        !$media.defined || !$query.defined || $query ~~ $media;
+    }
+
+    method stylesheet-content($doc, :$media) {
+        my URI() $base-url;
         my @content;
-        for $doc.findnodes('html/head/[link[@rel="stylesheet"]|html/head/style') -> $e  {
+        for $doc.findnodes('html/head/*') -> $e  {
             given $e.tag {
                 when 'style' {
                     @content.push: $e.textContent;
                 }
                 when 'link' {
-                    warn "ignoring linked stylesheet {$e.str}";
+                    $base-url //= $doc.?URI // './';
+                    with $e.getAttribute('rel') {
+                        when .lc eq 'stylesheet' {
+                            with $e.getAttribute('href') -> URI() $_ {
+                                if matching-media($media, $e.getAttribute('media')) {
+                                    my URI $url = .rel2abs($base-url.directory);
+                                    my CSS::URI $uri .= new: :$url;
+                                    @content.push: $_ with $uri.get;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
+        @content;
     }
 
     # Builds CSS properties from an element from a tag name and attributes

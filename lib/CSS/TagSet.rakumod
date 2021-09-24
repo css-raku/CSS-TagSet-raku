@@ -39,9 +39,11 @@ role CSS::TagSet:ver<0.0.22> {
     method xpath-init($) {} # override me
     method stylesheet-content($) { [] } # override me
     method module { ... }
-    method stylesheet($doc, |c --> CSS::Stylesheet) {
-        my @styles = @.stylesheet-content($doc);
-        CSS::Stylesheet.new(|c).parse(@styles.join: "\n");
+    method stylesheet($doc, :$media, |c --> CSS::Stylesheet) {
+        my @styles = @.stylesheet-content($doc, :$media);
+        my CSS::Stylesheet $css .= new: :$media, |c;
+        $css.parse($_) for @styles;
+        $css;
     }
 
     # attribute that contains inline styling
