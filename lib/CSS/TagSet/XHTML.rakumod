@@ -82,7 +82,7 @@ class CSS::TagSet::XHTML does CSS::TagSet {
         !$media.defined || !$query.defined || $query ~~ $media;
     }
 
-    method stylesheet-content($doc, :$media) {
+    method stylesheet-content($doc, :$media, :$links) {
         my URI() $base-url;
         my @content;
         for $doc.findnodes('html/head/*') -> $e  {
@@ -96,9 +96,14 @@ class CSS::TagSet::XHTML does CSS::TagSet {
                         when .lc eq 'stylesheet' {
                             with $e.getAttribute('href') -> URI() $_ {
                                 if matching-media($media, $e.getAttribute('media')) {
-                                    my URI $url = .rel2abs($base-url.directory);
-                                    my CSS::URI $uri .= new: :$url;
-                                    @content.push: $_ with $uri.get;
+                                    if $links {
+                                        my URI $url = .rel2abs($base-url.directory);
+                                        my CSS::URI $uri .= new: :$url;
+                                        @content.push: $_ with $uri.get;
+                                    }
+                                    else {
+                                        warn "ignoring {$e.Str} - use :links option to enable";
+                                    }
                                 }
                             }
                         }
@@ -189,5 +194,18 @@ to simulate other interactive states for styling purposes. For example:
 
     # this query now returns the above element
     $doc.first('//*:visited');
+
+=head3 stylesheet-content
+
+       method stylesheet-content(
+           $doc,                # document to process
+           Bool :$links,        # whether to follow stylesheet links
+           CSS::Media :$media,  # optional CSS::Media object
+       ) returns Array[Str]
+
+This method extracts internal stylesheet content from <style>...</style>
+blocks in the HTML head block.
+
+If the `:$links` flag is True, stylesheet links of the form <link rel="stylesheet" href="<url>"/>` will also be followed. In this case an optional `:$media` object may also be passed for filtering of links with a `media="<query>" media selection.
 
 =end pod

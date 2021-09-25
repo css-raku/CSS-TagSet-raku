@@ -50,3 +50,15 @@ This method can be used to set individual links to a state of `active`, `focus`,
     # this query now returns the above element
     $doc.first('//*:visited');
 
+### stylesheet-content
+
+    method stylesheet-content(
+        $doc,                # document to process
+        Bool :$links,        # whether to follow stylesheet links
+        CSS::Media :$media,  # optional CSS::Media object
+    ) returns Array[Str]
+
+This method extracts internal stylesheet content from <style>...</style> blocks in the HTML head block.
+
+If the `:$links` flag is True, stylesheet links of the form <link rel="stylesheet" href="<url>"/>` will also be followed. In this case an optional `:$media` object may also be passed for filtering of links with a `media="<query>" media selection.
+
