@@ -82,32 +82,39 @@ class CSS::TagSet::XHTML does CSS::TagSet {
         !$media.defined || !$query.defined || $query ~~ $media;
     }
 
-    method stylesheet-content($doc, :$media, :$links) {
-        my URI() $base-url;
+    method !load-linked-stylesheet($e, URI:D :$base-url!, :$media, :$links) {
         my @content;
-        for $doc.findnodes('html/head/*') -> $e  {
+
+        with $e.getAttribute('rel') {
+            when .lc eq 'stylesheet' {
+                with $e.getAttribute('href') -> URI() $_ {
+                    if matching-media($media, $e.getAttribute('media')) {
+                        if $links {
+                            my URI $url = .rel2abs($base-url.directory);
+                            my CSS::URI $uri .= new: :$url;
+                            @content.push: $_ with $uri.get;
+                        }
+                        else {
+                            warn "ignoring {$e.Str} - use :links option to enable";
+                        }
+                    }
+                }
+            }
+        }
+
+        @content;
+    }
+
+    method stylesheet-content($doc, :$media, :$links) {
+        my URI() $base-url =  $doc.?URI // './';
+        my @content;
+        for $doc.findnodes('html/head/*') -> $e {
             given $e.tag {
                 when 'style' {
                     @content.push: $e.textContent;
                 }
                 when 'link' {
-                    $base-url //= $doc.?URI // './';
-                    with $e.getAttribute('rel') {
-                        when .lc eq 'stylesheet' {
-                            with $e.getAttribute('href') -> URI() $_ {
-                                if matching-media($media, $e.getAttribute('media')) {
-                                    if $links {
-                                        my URI $url = .rel2abs($base-url.directory);
-                                        my CSS::URI $uri .= new: :$url;
-                                        @content.push: $_ with $uri.get;
-                                    }
-                                    else {
-                                        warn "ignoring {$e.Str} - use :links option to enable";
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    @content.append: self!load-linked-stylesheet($e, :$base-url, :$media, :$links);
                 }
             }
         }
