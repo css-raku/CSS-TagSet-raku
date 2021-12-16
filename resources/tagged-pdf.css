@@ -1,9 +1,11 @@
 :focus           { outline: thin dotted invert }
 :link, :visited  { text-decoration: underline }
 Annot, Link      { text-decoration: underline }
+:link, Link      { color: #00f }
+:visited         { color: #800080; }
 BlockQuote       { margin-left: 40px; margin-right: 40px }
-Caption          { display: table-caption; text-align:center }
-Code             { font-family: monospace }
+Caption          { display: table-caption; text-align: center }
+Code             { font-family: monospace; white-space: pre }
 Document         { margin: 8px }
 Document, Part, Art, Sect, Div, BlockQuote, Caption, TOC, Index, H, H1, H2, H3, H4, H5, H6, P, Index, L { display: block; unicode-bidi: embed }
 H, H1            { font-size: 2em; margin: .67em 0 }
