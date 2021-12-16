@@ -4,6 +4,7 @@ use v6;
 role CSS::TagSet:ver<0.0.23> {
     use CSS::Properties;
     use CSS::Stylesheet;
+    use CSS::Writer;
 
     sub load-css-tagset($tag-css, |c) is export(:load-css-tagset) {
         my %asts;
@@ -18,12 +19,17 @@ role CSS::TagSet:ver<0.0.23> {
                 with .<ruleset> {
                     my $declarations = .<declarations>;
                     for .<selectors>.list {
-                        for .<selector>.list {
-                            for .<simple-selector>.list {
-                                with .<qname><element-name> -> $elem-name {
-                                    %asts{$elem-name}.append: $declarations.list;
+                        given .<selector> {
+                            my @path;
+                            for .list {
+                                for .<simple-selector>.list {
+                                    @path.push: $_
+                                         with .<qname><element-name>;
                                 }
                             }
+
+                            my $key = @path == 1 ?? @path.head !! CSS::Writer.write: :selector($_);
+                            %asts{$key}.append: $declarations.list;
                         }
                     }
                 }
@@ -32,7 +38,7 @@ role CSS::TagSet:ver<0.0.23> {
         else {
             note "running with 'raku --doc', I hope"
         }
-       
+
         %asts;
     }
 
