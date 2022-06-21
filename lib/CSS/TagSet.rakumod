@@ -60,11 +60,6 @@ role CSS::TagSet:ver<0.0.23> {
         CSS::Properties.new(:$.module, :$style);
     }
 
-    # method to extract intrinsic styling information from tags and attributes
-    method tag-style($tag, *%attrs --> CSS::Properties) {
-        CSS::Properties.new;
-    }
-
     method base-style(|c) { ... }
 
 }

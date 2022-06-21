@@ -122,7 +122,10 @@ class CSS::TagSet::XHTML does CSS::TagSet {
     }
 
     # Builds CSS properties from an element from a tag name and attributes
-    method tag-style(Str $tag, :$hidden, *%attrs) {
+    multi method tag-style(Str $tag, *% where !.so) {
+        self.base-style($tag);
+    }
+    multi method tag-style(Str $tag, :$hidden, *%attrs) {
         my CSS::Properties $css = self.base-style($tag).clone;
         $css.display = :keyw<none> with $hidden;
 

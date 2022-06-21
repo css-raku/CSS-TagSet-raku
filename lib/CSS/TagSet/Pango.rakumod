@@ -89,19 +89,25 @@ class CSS::TagSet::Pango does CSS::TagSet {
     }
 
     # Builds CSS properties from an element from a tag name and attributes
-    method tag-style($tag, *%attrs) {
-        my CSS::Properties $css = self.base-style($tag).clone;
+    multi method tag-style('span', *%attrs) {
+        my CSS::Properties $css = self.base-style('span').clone;
 
-        if $tag eq 'span' {
-            for %attrs.keys.grep({%!SpanProp{$_}:exists}) {
+        for %attrs.keys {
+            if %!SpanProp{$_}:exists {
                 my $name = %!SpanProp{$_};
                 $css."$name"() = %attrs{$_};
+            }
+            else {
+                warn "ignoring 'style' attribute: '$_'";
             }
         }
 
         $css;
     }
 
+    multi method tag-style($tag) {
+        self.base-style($tag);
+    }
 }
 
 =begin pod

@@ -72,7 +72,10 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
 
     my subset HashMap of Pair where .value ~~ Associative;
     # Builds CSS properties from an element from a tag name and attributes
-    method tag-style($tag, *%attrs --> CSS::Properties) {
+    multi method tag-style(Str $tag, *% where !.so) {
+        self.base-style($tag);
+    }
+    multi method tag-style($tag, *%attrs --> CSS::Properties:D) {
         my CSS::Properties $css = self.base-style($tag).clone;
 
         for %attrs.keys.grep({%Layout{$_}:exists}) -> $key {
