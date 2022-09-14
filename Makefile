@@ -13,12 +13,16 @@ loudtest :
 $(DocLinker) :
 	(cd .. && git clone $(DocRepo) $(DocProj))
 
-doc : $(DocLinker) docs/index.md docs/CSS/TagSet.md docs/CSS/TagSet/XHTML.md docs/CSS/TagSet/Pango.md docs/CSS/TagSet/TaggedPDF.md
+Pod-To-Markdown-installed :
+	@raku -M Pod::To::Markdown -c
+
+doc : $(DocLinker) Pod-To-Markdown-installed docs/index.md docs/CSS/TagSet.md docs/CSS/TagSet/XHTML.md docs/CSS/TagSet/Pango.md docs/CSS/TagSet/TaggedPDF.md
 
 docs/index.md : README.md
 	cp $< $@
 
 docs/%.md : lib/%.rakumod
+	@raku -I . -c $<
 	raku -I . --doc=Markdown $< \
 	| TRAIL=$* raku -p -n $(DocLinker) \
          > $@
