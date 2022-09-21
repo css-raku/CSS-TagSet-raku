@@ -6,6 +6,7 @@ class CSS::TagSet::Pango does CSS::TagSet {
     use CSS::Module;
     use CSS::Module::CSS3;
     use CSS::Properties;
+    use CSS::Units;
 
     has CSS::Module $.module = CSS::Module::CSS3.module;
     has CSS::Properties %!props;
@@ -44,13 +45,16 @@ class CSS::TagSet::Pango does CSS::TagSet {
                 :like<font-size>,
                 :synopsis("<num> | xx-small | x-small | small | medium | large | x-large | xx-large | smaller | larger"),
                 :coerce(
-                    -> Str:D() $att {
-                        if $att.lc ∈ set <xx-small x-small small medium large x-large xx-large smaller larger> {
-                            :keyw($att.lc);
+                    -> $_ {
+                        when CSS::Units:D {
+                            $_;
                         }
-                        else {
+                        when .lc ∈ set <xx-small x-small small medium large x-large xx-large smaller larger> {
+                            :keyw(.lc);
+                        }
+                        default {
                             # size in thousandths of a point
-                            my $pt = $att.Numeric / 1000;
+                            my $pt = .Numeric / 1000;
                             :$pt
                         }
                     }),
@@ -70,10 +74,15 @@ class CSS::TagSet::Pango does CSS::TagSet {
                 :like<text-decoration>,
                 :synopsis("true | false"),
                 :coerce(
-                    -> Str:D $_ {
-                        :keyw(
-                            /:i true/ ?? 'line-through' !! 'none'
-                        )
+                    -> $_ {
+                        if $_ ~~ CSS::Units {
+                            $_;
+                        }
+                        else {
+                            :keyw(
+                                /:i true/ ?? 'line-through' !! 'none'
+                            )
+                        }
                     }
                 ),
             ),
