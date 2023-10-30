@@ -41,7 +41,7 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
     our %Layout = %(
         'FontFamily'|'FontSize'|'FontStyle'|'FontWeight'|'FontVariant'|'FontStretch'
                       => ->  Str $prop, $v { snake-case($prop) => $v ~ 'pt' },
-        # Table 343 – Standard layout attributes common to all standard structure types
+        # IS0 32000-1 Table 343 – Standard layout attributes common to all standard structure types
         'Placement'   => :display{ :Block<block>, :Inline<inline> },
         'WritingMode' => :direction{ :LrTb<ltr>, :RlTb<rtl> },
         'BackgroundColor'|'BorderColor'|'Color' => -> $_, $c {
