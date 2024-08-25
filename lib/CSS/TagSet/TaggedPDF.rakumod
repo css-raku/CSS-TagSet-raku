@@ -93,7 +93,7 @@ class CSS::TagSet::TaggedPDF does CSS::TagSet {
                     }
                 }
                 default {
-                    die "can't map attribute {.key} to {.value.raku}";
+                    die "can't map attribute {$key} to {.raku}";
                 }
             }
         }

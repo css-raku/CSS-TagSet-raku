@@ -12,7 +12,7 @@ role CSS::TagSet:ver<0.1.1> {
             # Todo: load via CSS::Stylesheet?
             my CSS::Module $module = CSS::Module::CSS3.module;
             my $actions = $module.actions.new: |c;
-            my $p = $module.grammar.parsefile(.absolute, :$actions);
+            my $p = $module.grammar.parsefile(.IO.absolute, :$actions);
             my %ast = $p.ast;
 
             for %ast<stylesheet>.list {
