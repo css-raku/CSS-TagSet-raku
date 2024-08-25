@@ -27,7 +27,7 @@
     "tagged-pdf.css",
     "xhtml.css"
   ],
-  "source-url": "git://github.com/css-raku/CSS-TagSet-raku.git",
+  "source-url": "https://github.com/css-raku/CSS-TagSet-raku.git",
   "tags": [
     "xml",
     "html",
@@ -36,5 +36,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.1.1"
+  "version": "0.1.2"
 }

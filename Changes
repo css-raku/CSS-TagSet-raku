@@ -2,6 +2,10 @@ Revision history for CSS-TagSet
 
 {{$NEXT}}
 
+0.1.2  2024-08-26T08:39:45+12:00
+    - Fix Raku deprecation warning
+    - Define PDF 2.0 Strong and Em tags
+
 0.1.1  2022-09-22T06:36:24+12:00
     - Fix Pango tag-set coercions for CSS::Properties 0.9.4
 
