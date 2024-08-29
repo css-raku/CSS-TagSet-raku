@@ -1,68 +1,63 @@
-use v6;
+#| interface role for tagsets
+unit role CSS::TagSet:ver<0.1.2>;
 
-# interface role for tagsets
-role CSS::TagSet:ver<0.1.2> {
-    use CSS::Properties;
-    use CSS::Stylesheet;
-    use CSS::Writer;
+use CSS::Properties;
+use CSS::Stylesheet;
+use CSS::Writer;
 
-    sub load-css-tagset($tag-css, |c) is export(:load-css-tagset) {
-        my %asts;
-        with $tag-css {
-            # Todo: load via CSS::Stylesheet?
-            my CSS::Module $module = CSS::Module::CSS3.module;
-            my $actions = $module.actions.new: |c;
-            my $p = $module.grammar.parsefile(.IO.absolute, :$actions);
-            my %ast = $p.ast;
+sub load-css-tagset($tag-css, |c) is export(:load-css-tagset) {
+    my %asts;
+    with $tag-css {
+        # Todo: load via CSS::Stylesheet?
+        my $css = .IO.slurp;
+        my CSS::Stylesheet $style-sheet .= parse: $css, |c;
 
-            for %ast<stylesheet>.list {
-                with .<ruleset> {
-                    my $declarations = .<declarations>;
-                    for .<selectors>.list {
-                        given .<selector> {
-                            my @path;
-                            for .list {
-                                for .<simple-selector>.list {
-                                    @path.push: $_
-                                         with .<qname><element-name>;
-                                }
+        for $style-sheet.rules {
+            with .ast<ruleset> {
+                my $declarations = .<declarations>;
+                for .<selectors>.list {
+                    given .<selector> {
+                        my @path;
+                        for .list {
+                            for .<simple-selector>.list {
+                                @path.push: $_
+                                     with .<qname><element-name>;
                             }
-
-                            my $key = @path == 1 ?? @path.head !! CSS::Writer.write: :selector($_);
-                            %asts{$key}.append: $declarations.list;
                         }
+
+                        my $key = @path == 1 ?? @path.head !! CSS::Writer.write: :selector($_);
+                        %asts{$key}.append: $declarations.map: {:property($_)};
                     }
                 }
             }
         }
-        else {
-            note "running with 'raku --doc', I hope"
-        }
-
-        %asts;
+    }
+    else {
+        note "running with 'raku --doc', I hope"
     }
 
-    method xpath-init($) {} # override me
-    method stylesheet-content($) { [] } # override me
-    method module { ... }
-    method stylesheet($doc, :$media, Bool :$links = False, |c --> CSS::Stylesheet) {
-        my @styles = @.stylesheet-content($doc, :$media, :$links);
-        my CSS::Stylesheet $css .= new: :$media, |c;
-        $css.parse($_) for @styles;
-        $css;
-    }
-
-    # attribute that contains inline styling
-    method inline-style-attribute { 'style' }
-
-    # method to extract inline styling
-    method inline-style(Str $, Str :$style) {
-        CSS::Properties.new(:$.module, :$style);
-    }
-
-    method base-style(|c) { ... }
-
+    %asts;
 }
+
+method xpath-init($) {} # override me
+method stylesheet-content($) { [] } # override me
+method module { ... }
+method stylesheet($doc, :$media, Bool :$links = False, |c --> CSS::Stylesheet) {
+    my @styles = @.stylesheet-content($doc, :$media, :$links);
+    my CSS::Stylesheet $css .= new: :$media, |c;
+    $css.parse($_) for @styles;
+    $css;
+}
+
+# attribute that contains inline styling
+method inline-style-attribute { 'style' }
+
+# method to extract inline styling
+method inline-style(Str $, Str :$style) {
+    CSS::Properties.new(:$.module, :$style);
+}
+
+method base-style(|c) { ... }
 
 =begin pod
 
