@@ -10,7 +10,7 @@ use CSS::Properties;
 has CSS::Module $.module = CSS::Module::CSS3.module;
 has CSS::Properties %!props;
 
-constant %Tags is export(:PDFTags) = load-css-tagset(%?RESOURCES<tagged-pdf.css>, :xml);
+constant %Tags is export(:PDFTags) = load-css-tagset(%?RESOURCES<tagged-pdf.css>, :xml, :media-type<print> );
 
 method declarations { %Tags }
 

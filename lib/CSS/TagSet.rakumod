@@ -1,16 +1,20 @@
 #| interface role for tagsets
 unit role CSS::TagSet:ver<0.1.2>;
 
+use CSS::Media;
 use CSS::Properties;
 use CSS::Stylesheet;
 use CSS::Writer;
+use CSS::Units :pt;
 
-sub load-css-tagset($tag-css, |c) is export(:load-css-tagset) {
+sub load-css-tagset($tag-css, Str :$media-type, |c) is export(:load-css-tagset) {
     my %asts;
     with $tag-css {
         # Todo: load via CSS::Stylesheet?
         my $css = .IO.slurp;
-        my CSS::Stylesheet $style-sheet .= parse: $css, |c;
+        my CSS::Media $media .= new: :type($_), :width(595pt), :height(842pt)
+            with $media-type;
+        my CSS::Stylesheet $style-sheet .= parse: $css, :$media, |c;
 
         for $style-sheet.rules {
             with .ast<ruleset> {

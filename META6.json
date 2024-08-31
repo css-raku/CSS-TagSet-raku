@@ -8,7 +8,7 @@
   "depends": [
     "CSS::Module:ver<0.5.8+>",
     "CSS::Properties:ver<0.9.4+>",
-    "CSS::Stylesheet:ver<0.0.27+>",
+    "CSS::Stylesheet:ver<0.1.2+>",
     "Method::Also",
     "URI:ver<0.3.3+>"
   ],
