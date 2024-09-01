@@ -123,7 +123,7 @@ method stylesheet-content($doc, :$media, :$links) {
 
 # Builds CSS properties from an element from a tag name and attributes
 multi method tag-style(Str $tag, *% where !.so) {
-    self.base-style($tag);
+    self.base-style($tag).clone;
 }
 multi method tag-style(Str $tag, :$hidden, *%attrs) {
     my CSS::Properties $css = self.base-style($tag).clone;

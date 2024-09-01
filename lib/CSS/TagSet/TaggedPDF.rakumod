@@ -73,7 +73,7 @@ our %Layout = %(
 my subset HashMap of Pair where .value ~~ Associative;
 # Builds CSS properties from an element from a tag name and attributes
 multi method tag-style(Str $tag, *% where !.so) {
-    self.base-style($tag);
+    self.base-style($tag).clone;
 }
 multi method tag-style($tag, *%attrs --> CSS::Properties:D) {
     my CSS::Properties $css = self.base-style($tag).clone;
