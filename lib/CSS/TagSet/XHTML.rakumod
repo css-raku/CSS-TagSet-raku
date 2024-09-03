@@ -11,13 +11,35 @@ use URI;
 has CSS::Properties %!props;
 has SetHash %!link-pseudo;
 has CSS::Module $.module = CSS::Module::CSS3.module;
+has %!tags;
 
-constant %Tags is export(:Tags) = load-css-tagset(%?RESOURCES<xhtml.css>);
+constant %BaseTags is export(:Tags) = load-css-tagset(%?RESOURCES<xhtml.css>);
 
-method declarations { %Tags }
+submethod TWEAK(IO() :$style-sheet) {
+    my %CustomProps = %(
+        '-xhtml-align' => %(
+            :like<text-align>,
+        ),
+        '-xhtml-colspan'|'-xhtml-rowspan' => %(
+            :synopsis<integer>,
+            :default(1),
+            :coerce(-> Int() $num { :$num }),
+        ),
+    );
+
+    for %CustomProps.pairs {
+        $!module.extend(:name(.key), |.value);
+    }
+    %!tags = %BaseTags;
+    load-css-tagset($_, :%!tags )
+        with $style-sheet;
+
+}
+
+method declarations { %!tags }
 
 method base-style(Str $prop) {
-    %!props{$prop} //= CSS::Properties.new(:$!module, declarations => %Tags{$prop} // []);
+    %!props{$prop} //= CSS::Properties.new(:$!module, declarations => %!tags{$prop} // []);
 }
 
 # mapping of HTML attributes to CSS properties
@@ -54,28 +76,12 @@ method xpath-init($xpath-context) {
             ? ($elem.tag ~~ 'a'|'link'|'area' && self.link-pseudo($name, $elem));
         });
 }
-submethod TWEAK(:$xpath-context) {
-    my %CustomProps = %(
-        '-xhtml-align' => %(
-            :like<text-align>,
-        ),
-        '-xhtml-colspan'|'-xhtml-rowspan' => %(
-            :synopsis<integer>,
-            :default(1),
-            :coerce(-> Int() $num { :$num }),
-        ),
-    );
-
-    for %CustomProps.pairs {
-        $!module.extend(:name(.key), |.value);
-    }
-}
 
 # any additional CSS styling based on HTML attributes
 multi sub tweak-style('bdo', $css) {
     $css.unicode-bidi //= :keyw<bidi-override>;
 }
-multi sub tweak-style($, $,) is default {
+multi sub tweak-style($, $,) {
 }
 
 sub matching-media($media, $query) {
@@ -122,12 +128,9 @@ method stylesheet-content($doc, :$media, :$links) {
 }
 
 # Builds CSS properties from an element from a tag name and attributes
-multi method tag-style(Str $tag, *% where !.so) {
-    self.base-style($tag).clone;
-}
-multi method tag-style(Str $tag, :$hidden, *%attrs) {
+method tag-style(Str $tag, :$hidden, *%attrs) {
     my CSS::Properties $css = self.base-style($tag).clone;
-    $css.display = :keyw<none> with $hidden;
+    $css.display = :keyw<none> if $hidden;
 
     for %attrs.keys.grep({%AttrTags{$_}:exists && $tag ~~ %AttrTags{$_}}) {
         my $name = %AttrProp{$_} // $_;

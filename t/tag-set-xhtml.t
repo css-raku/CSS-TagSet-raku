@@ -17,4 +17,9 @@ is $tag-set.tag-style('small'), 'font-size:0.75em;';
 $tag-set.base-style('blah').font-weight = 'bold';
 is $tag-set.tag-style('blah'), 'font-weight:bold;';
 
+is $tag-set.tag-style('kbd'), 'font-family:monospace;', 'Base kbd style';
+
+$tag-set .= new: :style-sheet<t/xhtml-extra.css>;
+is $tag-set.tag-style('kbd'), 'font:0.85em monospace;', 'Extended kbd style';
+
 done-testing();

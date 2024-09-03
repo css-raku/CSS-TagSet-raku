@@ -13,4 +13,9 @@ is $tag-set.tag-style('LI'),            'display:list-item; list-style:none; mar
 is $tag-set.tag-style('Span', :BorderStyle<Dotted>),         'border:dotted;', '<Dotted/>';
 is $tag-set.tag-style('Span', :SpaceBefore(5)),         '-pdf-space-before:5pt;', '<Span SpaceBefore=...>';
 
+is $tag-set.tag-style('Code'), 'font:0.85em monospace; white-space:pre;', 'Base Code style';
+
+$tag-set .= new: :style-sheet<t/pdf-extra.css>;
+is $tag-set.tag-style('Code'), 'font:italic 0.7em monospace; white-space:pre;', 'Extended Code style';
+
 done-testing();

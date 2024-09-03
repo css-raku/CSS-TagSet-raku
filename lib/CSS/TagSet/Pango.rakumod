@@ -10,25 +10,11 @@ use CSS::Units;
 
 has CSS::Module $.module = CSS::Module::CSS3.module;
 has CSS::Properties %!props;
+has %!tags;
 
-constant %Tags is export(:PangoTags) = load-css-tagset(%?RESOURCES<pango.css>);
-method declarations { %Tags }
+constant %BaseTags is export(:PangoTags) = load-css-tagset(%?RESOURCES<pango.css>);
 
-method base-style(Str $prop) {
-    %!props{$prop} //= CSS::Properties.new(:$!module, declarations => %Tags{$prop}) // [];
-}
-
-# mapping of Pango attributes to CSS properties
-has %!SpanProp = %(
-    background => 'background-color',
-    'face'|'font_family' => 'font-family',
-    foreground => 'color',
-    stretch => 'font-stretch',
-    style => 'font-style',
-    weight => 'font-weight',
-);
 submethod TWEAK {
-
     my %CustomProps = %(
         rise => '-pango-rise' => %(
             :synopsis<integer>,
@@ -95,7 +81,24 @@ submethod TWEAK {
         $!module.extend(:$name, |$meta);
         %!SpanProp{$att} = $name;
     }
+    %!tags = %BaseTags;
 }
+
+method declarations { %!tags }
+
+method base-style(Str $tag) {
+    %!props{$tag} //= CSS::Properties.new(:$!module, declarations => %!tags{$tag}) // [];
+}
+
+# mapping of Pango attributes to CSS properties
+has %!SpanProp = %(
+    background => 'background-color',
+    'face'|'font_family' => 'font-family',
+    foreground => 'color',
+    stretch => 'font-stretch',
+    style => 'font-style',
+    weight => 'font-weight',
+);
 
 # Builds CSS properties from an element from a tag name and attributes
 multi method tag-style('span', *%attrs) {
@@ -115,7 +118,7 @@ multi method tag-style('span', *%attrs) {
 }
 
 multi method tag-style($tag) {
-    self.base-style($tag);
+    self.base-style($tag).clone;
 }
 
 =begin pod

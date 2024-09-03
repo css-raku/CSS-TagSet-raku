@@ -3,22 +3,20 @@ unit class CSS::TagSet::TaggedPDF;
 use CSS::TagSet :&load-css-tagset;
 also does CSS::TagSet;
 
+use CSS::Media;
 use CSS::Module;
 use CSS::Module::CSS3;
 use CSS::Properties;
+use CSS::Units :pt;
 
 has CSS::Module $.module = CSS::Module::CSS3.module;
 has CSS::Properties %!props;
+has %!tags;
 
-constant %Tags is export(:PDFTags) = load-css-tagset(%?RESOURCES<tagged-pdf.css>, :xml, :media-type<print> );
+constant $media = CSS::Media.new: :type<print>, :width(595pt), :height(842pt);
+constant %BaseTags is export(:PDFTags) = load-css-tagset(%?RESOURCES<tagged-pdf.css>, :xml, :$media );
 
-method declarations { %Tags }
-
-method base-style(Str $prop) {
-    %!props{$prop} //= CSS::Properties.new: :$!module, declarations => %Tags{$prop} // []; 
-}
-
-submethod TWEAK {
+submethod TWEAK(IO() :$style-sheet) {
     my %CustomProps = %(
         '-pdf-space-before'|'-pdf-space-after'|'-pdf-start-indent'|'-pdf-end-indent' => %(
             :synopsis<number>,
@@ -30,7 +28,15 @@ submethod TWEAK {
     for %CustomProps.pairs {
         $!module.extend(:name(.key), |.value);
     }
+    %!tags = %BaseTags;
+    load-css-tagset($_, :xml, :$media, :%!tags )
+        with $style-sheet;
+}
 
+method declarations { %!tags }
+
+method base-style(Str $tag) {
+    %!props{$tag} //= CSS::Properties.new: :$!module, declarations => %!tags{$tag} // []; 
 }
 
 sub snake-case($s) {
@@ -72,10 +78,7 @@ our %Layout = %(
 
 my subset HashMap of Pair where .value ~~ Associative;
 # Builds CSS properties from an element from a tag name and attributes
-multi method tag-style(Str $tag, *% where !.so) {
-    self.base-style($tag).clone;
-}
-multi method tag-style($tag, *%attrs --> CSS::Properties:D) {
+method tag-style($tag, *%attrs --> CSS::Properties:D) {
     my CSS::Properties $css = self.base-style($tag).clone;
 
     for %attrs.keys.grep({%Layout{$_}:exists}) -> $key {

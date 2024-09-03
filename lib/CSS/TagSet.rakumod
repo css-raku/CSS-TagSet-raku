@@ -5,15 +5,11 @@ use CSS::Media;
 use CSS::Properties;
 use CSS::Stylesheet;
 use CSS::Writer;
-use CSS::Units :pt;
 
-sub load-css-tagset($tag-css, Str :$media-type, |c) is export(:load-css-tagset) {
-    my %asts;
+sub load-css-tagset($tag-css, CSS::Media :$media, :%tags, |c) is export(:load-css-tagset) {
     with $tag-css {
         # Todo: load via CSS::Stylesheet?
         my $css = .IO.slurp;
-        my CSS::Media $media .= new: :type($_), :width(595pt), :height(842pt)
-            with $media-type;
         my CSS::Stylesheet $style-sheet .= parse: $css, :$media, |c;
 
         for $style-sheet.rules {
@@ -30,7 +26,7 @@ sub load-css-tagset($tag-css, Str :$media-type, |c) is export(:load-css-tagset) 
                         }
 
                         my $key = @path == 1 ?? @path.head !! CSS::Writer.write: :selector($_);
-                        %asts{$key}.append: $declarations.map: {:property($_)};
+                        %tags{$key}.append: $declarations.map: {:property($_)};
                     }
                 }
             }
@@ -40,7 +36,7 @@ sub load-css-tagset($tag-css, Str :$media-type, |c) is export(:load-css-tagset) 
         note "running with 'raku --doc', I hope"
     }
 
-    %asts;
+    %tags;
 }
 
 method xpath-init($) {} # override me
