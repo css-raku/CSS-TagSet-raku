@@ -10,11 +10,9 @@ use CSS::Properties;
 use CSS::Units :pt;
 
 has CSS::Module $.module = CSS::Module::CSS3.module;
+has CSS::Media $.media .= new: :type<print>;
 has CSS::Properties %!props;
 has %!tags;
-
-constant $media = CSS::Media.new: :type<print>, :width(595pt), :height(842pt);
-constant %BaseTags is export(:PDFTags) = load-css-tagset(%?RESOURCES<tagged-pdf.css>, :xml, :$media );
 
 submethod TWEAK(IO() :$style-sheet) {
     my %CustomProps = %(
@@ -28,8 +26,10 @@ submethod TWEAK(IO() :$style-sheet) {
     for %CustomProps.pairs {
         $!module.extend(:name(.key), |.value);
     }
-    %!tags = %BaseTags;
-    load-css-tagset($_, :xml, :$media, :%!tags )
+
+    load-css-tagset(%?RESOURCES<tagged-pdf.css>, :xml, :$!media, :%!tags );
+
+    load-css-tagset($_, :xml, :%!tags, :$!media )
         with $style-sheet;
 }
 

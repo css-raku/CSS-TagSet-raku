@@ -10,11 +10,10 @@ use CSS::Units;
 
 has CSS::Module $.module = CSS::Module::CSS3.module;
 has CSS::Properties %!props;
+has CSS::Media $.media .= new: :type<screen>;
 has %!tags;
 
-constant %BaseTags is export(:PangoTags) = load-css-tagset(%?RESOURCES<pango.css>);
-
-submethod TWEAK {
+submethod TWEAK(IO() :$style-sheet) {
     my %CustomProps = %(
         rise => '-pango-rise' => %(
             :synopsis<integer>,
@@ -81,7 +80,11 @@ submethod TWEAK {
         $!module.extend(:$name, |$meta);
         %!SpanProp{$att} = $name;
     }
-    %!tags = %BaseTags;
+
+    load-css-tagset(%?RESOURCES<pango.css>, :$!media, :%!tags);
+
+    load-css-tagset($_, :xml, :%!tags )
+        with $style-sheet;
 }
 
 method declarations { %!tags }

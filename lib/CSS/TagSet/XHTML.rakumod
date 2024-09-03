@@ -9,11 +9,10 @@ use CSS::Properties;
 use URI;
 
 has CSS::Properties %!props;
+has CSS::Media $.media .= new: :type<screen>;
 has SetHash %!link-pseudo;
 has CSS::Module $.module = CSS::Module::CSS3.module;
 has %!tags;
-
-constant %BaseTags is export(:Tags) = load-css-tagset(%?RESOURCES<xhtml.css>);
 
 submethod TWEAK(IO() :$style-sheet) {
     my %CustomProps = %(
@@ -30,8 +29,10 @@ submethod TWEAK(IO() :$style-sheet) {
     for %CustomProps.pairs {
         $!module.extend(:name(.key), |.value);
     }
-    %!tags = %BaseTags;
-    load-css-tagset($_, :%!tags )
+
+    load-css-tagset(%?RESOURCES<xhtml.css>, :$!media, :%!tags);
+
+    load-css-tagset($_, :%!tags, :$!media)
         with $style-sheet;
 
 }

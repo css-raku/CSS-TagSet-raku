@@ -42,7 +42,7 @@ sub load-css-tagset($tag-css, CSS::Media :$media, :%tags, |c) is export(:load-cs
 method xpath-init($) {} # override me
 method stylesheet-content($) { [] } # override me
 method module { ... }
-method stylesheet($doc, :$media, Bool :$links = False, |c --> CSS::Stylesheet) {
+method stylesheet($doc, CSS::Media :$media, Bool :$links = False, |c --> CSS::Stylesheet) {
     my @styles = @.stylesheet-content($doc, :$media, :$links);
     my CSS::Stylesheet $css .= new: :$media, |c;
     $css.parse($_) for @styles;
