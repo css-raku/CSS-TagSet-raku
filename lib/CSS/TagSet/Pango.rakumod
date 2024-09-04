@@ -81,10 +81,13 @@ submethod TWEAK(IO() :$style-sheet) {
         %!SpanProp{$att} = $name;
     }
 
-    load-css-tagset(%?RESOURCES<pango.css>, :$!media, :%!tags);
-
-    load-css-tagset($_, :xml, :%!tags )
+    self.load-stylesheet(%?RESOURCES<pango.css>);
+    self.load-stylesheet($_)
         with $style-sheet;
+}
+
+method load-stylesheet(IO() $_) {
+    load-css-tagset($_, :$!media, :%!tags )
 }
 
 method declarations { %!tags }

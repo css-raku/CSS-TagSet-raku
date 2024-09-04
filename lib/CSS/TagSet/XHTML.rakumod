@@ -30,11 +30,13 @@ submethod TWEAK(IO() :$style-sheet) {
         $!module.extend(:name(.key), |.value);
     }
 
-    load-css-tagset(%?RESOURCES<xhtml.css>, :$!media, :%!tags);
-
-    load-css-tagset($_, :%!tags, :$!media)
+    self.load-stylesheet(%?RESOURCES<xhtml.css>);
+    self.load-stylesheet($_)
         with $style-sheet;
+}
 
+method load-stylesheet(IO() $_) {
+    load-css-tagset($_, :$!media, :%!tags )
 }
 
 method declarations { %!tags }

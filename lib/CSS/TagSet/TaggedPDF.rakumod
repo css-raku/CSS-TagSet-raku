@@ -27,10 +27,12 @@ submethod TWEAK(IO() :$style-sheet) {
         $!module.extend(:name(.key), |.value);
     }
 
-    load-css-tagset(%?RESOURCES<tagged-pdf.css>, :xml, :$!media, :%!tags );
+    self.load-stylesheet(%?RESOURCES<tagged-pdf.css> );
+    self.load-stylesheet($_) with $style-sheet;
+}
 
-    load-css-tagset($_, :xml, :%!tags, :$!media )
-        with $style-sheet;
+method load-stylesheet(IO() $_) {
+    load-css-tagset($_, :xml, :$!media, :%!tags )
 }
 
 method declarations { %!tags }

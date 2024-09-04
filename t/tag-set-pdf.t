@@ -18,4 +18,8 @@ is $tag-set.tag-style('Code'), 'font:0.85em monospace; white-space:pre;', 'Base 
 $tag-set .= new: :style-sheet<t/pdf-extra.css>;
 is $tag-set.tag-style('Code'), 'font:italic 0.7em monospace; white-space:pre;', 'Extended Code style';
 
+$tag-set .= new;
+$tag-set.load-stylesheet: 't/pdf-extra.css';
+is $tag-set.tag-style('Code'), 'font:italic 0.7em monospace; white-space:pre;', 'Extended Code style';
+
 done-testing();
