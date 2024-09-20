@@ -133,7 +133,7 @@ method stylesheet-content($doc, :$media, :$links) {
 # Builds CSS properties from an element from a tag name and attributes
 method tag-style(Str $tag, :$hidden, *%attrs) {
     my CSS::Properties $css = self.base-style($tag).clone;
-    $css.display = :keyw<none> if $hidden;
+    $css.display = :keyw<none> with $hidden;
 
     for %attrs.keys.grep({%AttrTags{$_}:exists && $tag ~~ %AttrTags{$_}}) {
         my $name = %AttrProp{$_} // $_;
