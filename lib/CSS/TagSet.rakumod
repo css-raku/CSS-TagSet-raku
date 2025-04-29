@@ -6,11 +6,12 @@ use CSS::Properties;
 use CSS::Stylesheet;
 use CSS::Writer;
 
-sub load-css-tagset($tag-css, CSS::Media :$media, :%tags, |c) is export(:load-css-tagset) {
+sub load-css-tagset($tag-css, CSS::Media :$media!, :%tags!, |c) is export(:load-css-tagset) {
+    my CSS::Stylesheet $style-sheet;
     with $tag-css {
         # Todo: load via CSS::Stylesheet?
         my $css = .IO.slurp;
-        my CSS::Stylesheet $style-sheet .= parse: $css, :$media, |c;
+        $style-sheet .= parse: $css, :$media, |c;
 
         for $style-sheet.rules {
             with .ast<ruleset> {
@@ -36,7 +37,7 @@ sub load-css-tagset($tag-css, CSS::Media :$media, :%tags, |c) is export(:load-cs
         note "running with 'raku --doc', I hope"
     }
 
-    %tags;
+    $style-sheet;
 }
 
 method xpath-init($) {} # override me
