@@ -1,16 +1,16 @@
 :focus           { outline: thin dotted invert }
 :link, Link      { color: #00f }
 :visited         { color: #800080; }
-:link, :visited, Annot, Link, Title  { text-decoration: underline }
+:link, :visited, Annot, Link, Title, H, H1  { text-decoration: underline }
 P, H, H1, H2, H3, H4, H5, H6, Lbl, LBody, Title { display: block; unicode-bidi: embed }
 Span, Quote, Note, Reference, BibEntry, Code, Link, Annot, Strong, Em { display: inline }
 BlockQuote       { margin-left: 40px; margin-right: 40px }
 Caption          { display: table-caption; text-align: center }
-Code             { font-family: monospace; white-space: pre; font-size: 0.85em }
+Code             { font-family: monospace; white-space: pre; }
 Document         { margin: 8px }
 Title            { font-size: 2.5em; margin: .5em 0 }
 H, H1            { font-size: 2em; margin: .67em 0 }
-H1, H2, H3, H4, Strong { font-weight: bolder }
+Title, H1, H2, H3, H4, Strong { font-weight: bolder }
 H2               { font-size: 1.5em; margin: .75em 0 }
 H3               { font-size: 1.17em; margin: .83em 0 }
 H4, P, Blockquote, Form { margin: 1.12em 0 }
