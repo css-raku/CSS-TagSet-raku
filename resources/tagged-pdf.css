@@ -6,7 +6,7 @@ P, H, H1, H2, H3, H4, H5, H6, Lbl, LBody, Title { display: block; unicode-bidi: 
 Span, Quote, Note, Reference, BibEntry, Code, Link, Annot, Strong, Em { display: inline }
 BlockQuote       { margin-left: 40px; margin-right: 40px }
 Caption          { display: table-caption; text-align: center }
-Code             { font-family: monospace; white-space: pre; }
+Code             { font-family: monospace; white-space: pre; font-size: .85em }
 Document         { margin: 8px }
 Title            { font-size: 2.5em; margin: .5em 0 }
 H, H1            { font-size: 2em; margin: .67em 0 }
