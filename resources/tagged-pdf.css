@@ -27,13 +27,13 @@ TFoot            { display: table-footer-group }
 TH               { font-weight: bolder; text-align: center }
 THead            { display: table-header-group }
 THead, TBody, TFoot { vertical-align: middle }
-TOCI, LI         { margin-left: 40px; display: list-item; list-style-type: none;}
+TOCI, LI         { margin-left: 40px; display: list-item; list-style-type: none; }
 TR               { display: table-row }
 Table            { display: table; margin: .5em 0 0 }
 
 @media print {
     H, H1, Title  { page-break-before: always }
     H1, H2, H3,
-    H4, H5, H6, Table, THead, P { page-break-after: avoid }
+    H4, H5, H6, Table, THead, P, LI { page-break-after: avoid }
     L            { page-break-before: avoid }
 }

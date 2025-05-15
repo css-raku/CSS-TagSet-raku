@@ -50,7 +50,7 @@ our %Layout = %(
     'FontFamily'|'FontSize'|'FontStyle'|'FontWeight'|'FontVariant'|'FontStretch'
                   => ->  Str $prop, $v { snake-case($prop) => $v ~ 'pt' },
     # IS0 32000-1 Table 343 – Standard layout attributes common to all standard structure types
-    'Placement'   => :display{ :Block<block>, :Inline<inline> },
+    'Placement'   => :display{ 'Block'|'Before'|'Start'|'End' => 'block', :Inline<inline> },
     'WritingMode' => :direction{ :LrTb<ltr>, :RlTb<rtl> },
     'BackgroundColor'|'BorderColor'|'Color' => -> $_, $c {
         .&snake-case => '#' ~ $c.split(' ').map({sprintf("%02x", (.Num * 255).round)}).join;

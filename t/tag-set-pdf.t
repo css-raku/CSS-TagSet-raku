@@ -9,7 +9,7 @@ is $tag-set.tag-style('H1'),              'display:block; font-size:2em; font-we
 is $tag-set.tag-style('H2'),         'display:block; font-size:1.5em; font-weight:bolder; margin-bottom:0.75em; margin-top:0.75em; page-break-after:avoid; unicode-bidi:embed;', '<H2/>';
 is $tag-set.tag-style('H3'),         'display:block; font-size:1.17em; font-weight:bolder; margin-bottom:0.83em; margin-top:0.83em; page-break-after:avoid; unicode-bidi:embed;', '<H3/>';
 is $tag-set.tag-style('Code'),            'font:0.85em monospace; white-space:pre;', '<Code/>';
-is $tag-set.tag-style('LI'),            'display:list-item; list-style:none; margin-left:40px;', '<LI/>';
+is $tag-set.tag-style('LI'),            'display:list-item; list-style:none; margin-left:40px; page-break-after:avoid;', '<LI/>';
 is $tag-set.tag-style('Span', :BorderStyle<Dotted>),         'border:dotted;', '<Dotted/>';
 is $tag-set.tag-style('Span', :SpaceBefore(5)),         '-pdf-space-before:5pt;', '<Span SpaceBefore=...>';
 

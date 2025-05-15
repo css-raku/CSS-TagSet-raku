@@ -65,6 +65,6 @@ Classes
 
   * [CSS::TagSet::Pango](https://css-raku.github.io/CSS-TagSet-raku/CSS/TagSet/Pango) - Implements Pango styling
 
-  * [CSS::TagSet::TaggedPDF](https://css-raku.github.io/CSS-TagSet-raku/CSS/TagSet/TaggedPDF) - (*UNDER CONSTRUCTION*) Implements Tagged PDF styling
+  * [CSS::TagSet::TaggedPDF](https://css-raku.github.io/CSS-TagSet-raku/CSS/TagSet/TaggedPDF) - Implements Tagged PDF styling
 
 
