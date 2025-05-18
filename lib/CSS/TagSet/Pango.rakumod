@@ -8,10 +8,7 @@ use CSS::Module::CSS3;
 use CSS::Properties;
 use CSS::Units;
 
-has CSS::Module $.module = CSS::Module::CSS3.module;
-has CSS::Properties %!props;
 has CSS::Media $.media .= new: :type<screen>;
-has %!tags;
 
 submethod TWEAK(IO() :$style-sheet) {
     my %CustomProps = %(
@@ -91,10 +88,6 @@ method load-stylesheet(IO() $_) {
 }
 
 method declarations { %!tags }
-
-method base-style(Str $tag) {
-    %!props{$tag} //= CSS::Properties.new(:$!module, declarations => %!tags{$tag}) // [];
-}
 
 # mapping of Pango attributes to CSS properties
 has %!SpanProp = %(

@@ -2,6 +2,10 @@
  / [[CSS-TagSet]](https://css-raku.github.io/CSS-TagSet-raku)
  / [CSS::TagSet](https://css-raku.github.io/CSS-TagSet-raku/CSS/TagSet)
 
+
+
+interface role for tagsets
+
 Name
 ----
 
@@ -35,13 +39,13 @@ Default method to parse an inline style associated with the tag, typically the i
 
     method tag-style(Str $tag, Str *%atts) returns CSS::Properties
 
-Abstract method to compute a specific style, based on a tag-name and any additional tag attributes. This method must be implemented, by the class instance.
+Computes a specific style, based on a tag-name and any additional tag attributes. This method must be implemented, by the class instance.
 
 By convention, this method vivifies a new empty [CSS::Properties](https://css-raku.github.io/CSS-Properties-raku/CSS/Properties) object, if the tag was previously unknown.
 
 ### method base-style
 
-    method tag-style(str $tag) returns CSS::Properties
+    method base-style(str $tag) returns CSS::Properties
 
-Abstract rule to 
+Return the basic style for the tag.
 

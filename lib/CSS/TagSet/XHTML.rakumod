@@ -8,11 +8,8 @@ use CSS::Module::CSS3;
 use CSS::Properties;
 use URI;
 
-has CSS::Properties %!props;
 has CSS::Media $.media .= new: :type<screen>;
 has SetHash %!link-pseudo;
-has CSS::Module $.module = CSS::Module::CSS3.module;
-has %!tags;
 
 submethod TWEAK(IO() :$style-sheet) {
     my %CustomProps = %(
@@ -40,10 +37,6 @@ method load-stylesheet(IO() $_) {
 }
 
 method declarations { %!tags }
-
-method base-style(Str $prop) {
-    %!props{$prop} //= CSS::Properties.new(:$!module, declarations => %!tags{$prop} // []);
-}
 
 # mapping of HTML attributes to CSS properties
 constant %AttrProp = %(

@@ -9,10 +9,7 @@ use CSS::Module::CSS3;
 use CSS::Properties;
 use CSS::Units :pt;
 
-has CSS::Module $.module = CSS::Module::CSS3.module;
 has CSS::Media $.media .= new: :type<print>;
-has CSS::Properties %!props;
-has %!tags;
 
 submethod TWEAK(IO() :$style-sheet) {
     my %CustomProps = %(
@@ -36,10 +33,6 @@ method load-stylesheet(IO() $_) {
 }
 
 method declarations { %!tags }
-
-method base-style(Str $tag) {
-    %!props{$tag} //= CSS::Properties.new: :$!module, declarations => %!tags{$tag} // []; 
-}
 
 sub snake-case($s) {
     $s.split(/<?after .><?before <[A..Z]>>/)».lc.join: '-'
@@ -90,7 +83,7 @@ method tag-style($tag, *%attrs --> CSS::Properties:D) {
                 $css."$_"() = $value;
             }
             when HashMap {
-                $css."{.key}"() = $_ with .value{$value}; 
+                $css."{.key}"() = $_ with .value{$value};
             }
             when Code {
                 with .($key, $value) -> $kv {

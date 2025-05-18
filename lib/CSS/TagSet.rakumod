@@ -5,6 +5,11 @@ use CSS::Media;
 use CSS::Properties;
 use CSS::Stylesheet;
 use CSS::Writer;
+has CSS::Properties %.props;
+has %.tags;
+has CSS::Module $.module = CSS::Module::CSS3.module;
+
+method media { ... }
 
 sub load-css-tagset($tag-css, CSS::Media :$media!, :%tags!, |c) is export(:load-css-tagset) {
     my CSS::Stylesheet $style-sheet;
@@ -58,7 +63,9 @@ method inline-style(Str $, Str :$style) {
     CSS::Properties.new(:$.module, :$style);
 }
 
-method base-style(|c) { ... }
+method base-style(Str $tag) {
+    %.props{$tag} //= CSS::Properties.new: :$.module, declarations => %.tags{$tag} // [];
+}
 
 =begin pod
 
@@ -94,14 +101,14 @@ from the  `style` attribute.
 
     method tag-style(Str $tag, Str *%atts) returns CSS::Properties
 
-Abstract method to compute a specific style, based on a tag-name and any additional tag attributes. This method must be implemented, by the class instance.
+Computes a specific style, based on a tag-name and any additional tag attributes. This method must be implemented, by the class instance.
 
 By convention, this method vivifies a new empty L<CSS::Properties> object, if the tag was previously unknown.
 
 =head3 method base-style
 
-    method tag-style(str $tag) returns CSS::Properties
+    method base-style(str $tag) returns CSS::Properties
 
-Abstract rule to 
+Return the basic style for the tag.
 
 =end pod
