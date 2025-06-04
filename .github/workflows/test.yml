@@ -27,6 +27,8 @@ jobs:
           raku-version: ${{ matrix.raku-version }}
       - name: Install Dependencies
         run: |
+          zef install MacOS::NativeLib
+          ensure-symlink-for cairo
           zef install --/test App::Prove6
           zef install --deps-only .
       - name: Run Tests
