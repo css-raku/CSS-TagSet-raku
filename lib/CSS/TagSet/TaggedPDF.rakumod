@@ -83,7 +83,9 @@ method tag-style($tag, *%attrs --> CSS::Properties:D) {
                 $css."$_"() = $value;
             }
             when HashMap {
-                $css."{.key}"() = $_ with .value{$value};
+                given .key -> $prop {
+                    $css."{$prop}"() = $_ with .value{$value};
+                }
             }
             when Code {
                 with .($key, $value) -> $kv {
