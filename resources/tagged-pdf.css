@@ -2,8 +2,8 @@
 :link, Link      { color: #00f }
 :visited         { color: #800080; }
 :link, :visited, Annot, Link, Title, H, H1  { text-decoration: underline }
-P, H, H1, H2, H3, H4, H5, H6, Lbl, LBody, Title { display: block; unicode-bidi: embed }
-Span, Quote, Note, Reference, BibEntry, Code, Link, Annot, Strong, Em, Mark, Artifact { display: inline }
+P, H, H1, H2, H3, H4, H5, H6, LBody, Title { display: block; unicode-bidi: embed }
+Span, Quote, Note, FENote, Reference, BibEntry, Code, Link, Annot, Strong, Em, Mark, Artifact, Lbl { display: inline }
 BlockQuote       { margin-left: 40px; margin-right: 40px }
 Caption          { display: table-caption; text-align: center }
 Code             { font-family: monospace; white-space: pre; font-size: .85em }
