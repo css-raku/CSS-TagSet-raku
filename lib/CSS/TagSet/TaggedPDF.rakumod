@@ -66,7 +66,13 @@ our %Layout = %(
     },
     # Custom properties which don't map well to CSS standard properties
     'SpaceBefore'|'SpaceAfter'|'StartIndent'|'EndIndent' => -> Str $prop, Num() $pt {
-        '-pdf-' ~ snake-case($prop) => :$pt;
+        my Str:D $margin = {
+            :SpaceBefore<top>,
+            :SpaceAfter<bottom>,
+            :StartIndent<left>,
+            :EndIndent<right>,
+        }{$prop};
+        ('margin-' ~ $margin) => :$pt;
     },
     # Todo: BBox BlockAlign InlineAlign TBorderStyle TPadding TextDecorationColor TextDecorationThickness RubyAlign RubyPosition GlyphOrientationVertical
 );

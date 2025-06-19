@@ -11,7 +11,7 @@ is $tag-set.tag-style('H3'),         'display:block; font-size:1.17em; font-weig
 is $tag-set.tag-style('Code'),            'font:0.85em monospace; white-space:pre;', '<Code/>';
 is $tag-set.tag-style('LI'),            'display:list-item; list-style:none; margin-left:40px; page-break-after:avoid;', '<LI/>';
 is $tag-set.tag-style('Span', :BorderStyle<Dotted>),         'border:dotted;', '<Dotted/>';
-is $tag-set.tag-style('Span', :SpaceBefore(5)),         '-pdf-space-before:5pt;', '<Span SpaceBefore=...>';
+is $tag-set.tag-style('Span', :SpaceBefore(5)),         'margin-top:5pt;', '<Span SpaceBefore=...>';
 
 is $tag-set.tag-style('Code'), 'font:0.85em monospace; white-space:pre;', 'Base Code style';
 
