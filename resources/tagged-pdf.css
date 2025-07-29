@@ -2,7 +2,7 @@
 :link, Link      { color: #00f }
 :visited         { color: #800080; }
 :link, :visited, Annot, Link, Title, H, H1  { text-decoration: underline }
-P, H, H1, H2, H3, H4, H5, H6, LBody, Title { display: block; unicode-bidi: embed }
+P, H, H1, H2, H3, H4, H5, H6, LBody, Title, Div, Document, BlockQuote { display: block; unicode-bidi: embed }
 Span, Quote, Note, FENote, Reference, BibEntry, Code, Link, Annot, Strong, Em, Mark, Artifact, Lbl { display: inline }
 BlockQuote       { margin-left: 40px; margin-right: 40px }
 Caption          { display: table-caption; text-align: center }
@@ -21,7 +21,7 @@ NonStruct        { display: none }
 Caption, Quote, Reference, Em { font-style: italic }
 RT, WT           { font-size: smaller }
 TBody            { display: table-row-group }
-TD, TH           { display: table-cell; border: 1px solid; padding: 5px}
+TD, TH           { display: table-cell; border: 2px; padding: 5px}
 TD, TH, TR       { vertical-align: inherit }
 TFoot            { display: table-footer-group }
 TH               { font-weight: bolder; text-align: center }

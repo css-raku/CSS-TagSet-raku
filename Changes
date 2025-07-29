@@ -1,6 +1,14 @@
 Revision history for CSS-TagSet
 
 {{$NEXT}}
+    - Provide per-tagset default stylesheet media
+    - Move base-style() method to base class. Make it return
+      a cloned (modifiable) copy.
+    - Tagged PDF
+      -- Fix Blockquote definition
+      -- Add styling for PDF 2.0 FENote tag
+      -- Define newly introduced Mark pseudo tag
+      -- General development of resources/tagged-pdf.css
 
 0.1.2  2024-08-26T08:39:45+12:00
     - Fix Raku deprecation warning
