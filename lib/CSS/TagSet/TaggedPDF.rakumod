@@ -64,7 +64,6 @@ our %Layout = %(
     'TextDecorationType' => -> Str $, Str $s {
         text-decoration => $s.lc;
     },
-    # Custom properties which don't map well to CSS standard properties
     'SpaceBefore'|'SpaceAfter'|'StartIndent'|'EndIndent' => -> Str $prop, Num() $pt {
         my Str:D $margin = {
             :SpaceBefore<top>,

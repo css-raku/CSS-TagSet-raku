@@ -32,7 +32,7 @@ TR               { display: table-row }
 Table            { display: table; margin: .5em 0 0 }
 
 @media print {
-    H, H1, Title  { page-break-before: always }
+    H, H1, Title { page-break-before: always }
     H1, H2, H3,
     H4, H5, H6, Table, THead, P, LI, BockQuote { page-break-after: avoid }
     L            { page-break-before: avoid }

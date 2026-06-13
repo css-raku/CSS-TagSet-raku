@@ -1,6 +1,8 @@
 Revision history for CSS-TagSet
 
 {{$NEXT}}
+    - Write selectors from a CSS::Writer instance, as required
+      in latest CSS::Writer
 
 0.1.3  2025-07-30T08:33:12+12:00
     - Provide per-tagset default stylesheet media
