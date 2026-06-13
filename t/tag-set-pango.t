@@ -4,6 +4,7 @@ use CSS::TagSet::Pango;
 my CSS::TagSet::Pango $tag-set .= new;
 
 is $tag-set.tag-style('i'), 'font-style:italic;', '<i/>';
+is $tag-set.tag-style('I'), '', '<I/>';
 is $tag-set.tag-style('b'), 'font-weight:bold;', '<b/>';
 is $tag-set.tag-style('big'), 'font-size:larger;', '<big/>';
 is $tag-set.tag-style('s'), 'text-decoration:line-through;', '<s/>';

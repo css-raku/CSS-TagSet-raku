@@ -11,13 +11,13 @@ has CSS::Module $.module = CSS::Module::CSS3.module;
 
 method media { ... }
 
-sub load-css-tagset($tag-css, CSS::Media :$media!, :%tags!, |c) is export(:load-css-tagset) {
+sub load-css-tagset($tag-css, CSS::Media :$media!, Bool :$xml = True, :%tags!, |c) is export(:load-css-tagset) {
     my CSS::Stylesheet $style-sheet;
     with $tag-css {
         # Todo: load via CSS::Stylesheet?
-        my CSS::Writer $writer .= new;
+        my CSS::Writer $writer .= new: :$xml;
         my $css = .IO.slurp;
-        $style-sheet .= parse: $css, :$media, |c;
+        $style-sheet .= parse: $css, :$media, :$xml, |c;
 
         for $style-sheet.rules {
             with .ast<ruleset> {
