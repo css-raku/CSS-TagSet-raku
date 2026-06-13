@@ -1,5 +1,5 @@
 #| interface role for tagsets
-unit role CSS::TagSet:ver<0.1.3>;
+unit role CSS::TagSet:ver<0.1.4>;
 
 use CSS::Media;
 use CSS::Properties;

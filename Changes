@@ -1,6 +1,8 @@
 Revision history for CSS-TagSet
 
 {{$NEXT}}
+
+0.1.4  2026-06-14T10:46:31+12:00
     - Write selectors from a CSS::Writer instance, as required
       in latest CSS::Writer
 
