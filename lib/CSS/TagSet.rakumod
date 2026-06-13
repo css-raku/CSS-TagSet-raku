@@ -15,6 +15,7 @@ sub load-css-tagset($tag-css, CSS::Media :$media!, :%tags!, |c) is export(:load-
     my CSS::Stylesheet $style-sheet;
     with $tag-css {
         # Todo: load via CSS::Stylesheet?
+        my CSS::Writer $writer .= new;
         my $css = .IO.slurp;
         $style-sheet .= parse: $css, :$media, |c;
 
@@ -31,7 +32,7 @@ sub load-css-tagset($tag-css, CSS::Media :$media!, :%tags!, |c) is export(:load-
                             }
                         }
 
-                        my $key = @path == 1 ?? @path.head !! CSS::Writer.write: :selector($_);
+                        my $key = @path == 1 ?? @path.head !! $writer.write: :selector($_);
                         %tags{$key}.append: $declarations.map: {:property($_)};
                     }
                 }
